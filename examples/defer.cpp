@@ -29,8 +29,14 @@ int main() {
     std::cout << "app start ..." << std::endl;
 
     defer
-    {
+    (
         std::cout << "defer code 0.0" << std::endl;
+    );
+
+    // this is fine
+    _defer_
+    {
+        std::cout << "_defer_ code 1.1" << std::endl;
     };
 
     std::cout << "app end ..." << std::endl;

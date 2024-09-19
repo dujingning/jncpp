@@ -22,38 +22,10 @@
 * SOFTWARE.
 */
 
-#ifndef __JNCPP_DEFER__
-#define __JNCPP_DEFER__
+#ifndef __JNCPP_CALL_ONCE__
+#define __JNCPP_CALL_ONCE__
 
-#include <iostream>
-#include <functional>
-
-namespace jncpp {
-    
-
-class jnDeferHelper {
-
-public:
-
-    template <typename Func>
-#if __cplusplus >= 201703L
-    jnDeferHelper(Func&& func) : func_(std::forward<Func>(func)) {}
-#else
-    jnDeferHelper(Func func) : func_(std::forward<Func>(func)) {}
-#endif
-
-    ~jnDeferHelper() {
-      if (func_)
-        func_();
-        
-    }
-
-private:
-
-    std::function<void()> func_;
-
-};
-
+#include <mutex>
 
 #ifndef CONCATENATE_DETAIL
 #define CONCATENATE_DETAIL(x, y) x##y
@@ -63,19 +35,11 @@ private:
 #define CONCATENATE(x, y) CONCATENATE_DETAIL(x, y)
 #endif
 
-/**
- * This code is work,but maybe forgot ';'
-   __jn_defer__ {
-       your code;
-   };
-*/
-#ifndef _defer_
-#define _defer_ jncpp::jnDeferHelper CONCATENATE(__defer__, __LINE__) = [&]()
-#endif
+#define Call_Once(code)                                                     \
+    do {                                                                    \
+        static std::once_flag CONCATENATE(__call_once__, __LINE__);             \
+        std::call_once(CONCATENATE(__call_once__, __LINE__), [&]() { code });   \
+    } while(0)
 
-#define defer(code) _defer_{code}
-
-
-}
 
 #endif // __JNCPP_DEFER__
