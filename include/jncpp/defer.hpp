@@ -66,36 +66,39 @@ private:
 #endif
 
 
+// #define USE_ROUND_BRACE_DEFER
+
+
 /***************************************************************************************
  * global defer */
 
-#ifndef _global_defer_
+#ifndef _jn_global_defer_
 /** global defer code Run before the end of main. */
-#define _global_defer_ jncpp::jnDeferHelper CONCATENATE(__defer__, __COUNTER__ ) = []()
+#define _jn_global_defer_ jncpp::jnDeferHelper CONCATENATE(__defer__, __COUNTER__ ) = []()
 #endif
 
-#ifndef __USE_BRACE_DEFER__
+#ifndef USE_ROUND_BRACE_DEFER
 /** global defer code Run before the end of main. */
-#define global_defer(code) _global_defer_{code}
+#define global_defer _jn_global_defer_
 #else
-/** global defer code Run before the end of scope. */
-#define global_defer _global_defer_
+/** global defer code Run before the end of main. */
+#define global_defer(code) _jn_global_defer_{ code }
 #endif
 
 
 /***************************************************************************************
  * local defer */
-#ifndef _defer_
+#ifndef _jn_defer_
 /** defer code Run before the end of scope. */
-#define _defer_ jncpp::jnDeferHelper CONCATENATE(__defer__, __COUNTER__ ) = [&]()
+#define _jn_defer_ jncpp::jnDeferHelper CONCATENATE(__defer__, __COUNTER__ ) = [&]()
 #endif
 
-#ifndef __USE_BRACE_DEFER__
+#ifndef USE_ROUND_BRACE_DEFER
 /** defer code Run before the end of scope. */
-#define defer(code) _defer_{code}
+#define defer _jn_defer_
 #else
 /** defer code Run before the end of scope. */
-#define defer _defer_
+#define defer(code) _jn_defer_{ code }
 #endif
 
 

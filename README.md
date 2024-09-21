@@ -31,11 +31,6 @@ The Go programming language has a `defer` keyword that allows you to execute cod
 - **Global defer**: Runs after the main function.
 ```cpp
 global_defer
-(
-    std::cout << "defer code 0.0" << std::endl;
-);
-
-_global_defer_
 {
     std::cout << "defer code 1.0" << std::endl;
 }; // semicolon required
@@ -44,22 +39,17 @@ _global_defer_
 - **Local defer**: Run before the end of scope.
 ```cpp
 void function() {
+    defer // Run before the end of scope.
+    {
+        std::cout << "defer code 1.0" << std::endl;
+    };  // semicolon required
+
     {
         defer // Run before the end of scope.
-        (
+        {
             std::cout << "defer code 0.0" << std::endl;
-        );  
+        };  
     }
-
-    defer
-    (
-        std::cout << "defer code 1.0" << std::endl;
-    );
-
-    _defer_
-    {
-        std::cout << "defer code 2.0" << std::endl;
-    };  // semicolon required
 }
 ```
 ## [2.Call_Once](https://github.com/dujingning/jncpp/blob/main/examples/call_once.cpp)
