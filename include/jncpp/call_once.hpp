@@ -27,6 +27,7 @@
 
 #include <mutex>
 
+
 #ifndef CONCATENATE_DETAIL
 #define CONCATENATE_DETAIL(x, y) x##y
 #endif
@@ -35,8 +36,8 @@
 #define CONCATENATE(x, y) CONCATENATE_DETAIL(x, y)
 #endif
 
-#define Call_Once(code)                                                     \
-    do {                                                                    \
+#define Call_Once(code)                                                         \
+    do {                                                                        \
         static std::once_flag CONCATENATE(__call_once__, __LINE__);             \
         std::call_once(CONCATENATE(__call_once__, __LINE__), [&]() { code });   \
     } while(0)

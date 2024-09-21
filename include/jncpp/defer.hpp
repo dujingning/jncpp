@@ -63,6 +63,12 @@ private:
 #define CONCATENATE(x, y) CONCATENATE_DETAIL(x, y)
 #endif
 
+#ifndef _global_defer_
+#define _global_defer_ jncpp::jnDeferHelper CONCATENATE(__defer__, __LINE__) = []()
+#endif
+
+#define global_defer(code) _global_defer_{code}
+
 /**
  * This code is work,but maybe forgot ';'
    __jn_defer__ {

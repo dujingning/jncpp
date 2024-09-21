@@ -24,23 +24,38 @@
 
 #include <jncpp/defer.hpp>
 
+#include <iostream>
+
+// executed after main
+global_defer
+(
+    std::cout << "Global defer: code 0.0" << std::endl;
+);
+
+// executed after main
+_global_defer_
+{
+    std::cout << "Global defer: code 1.0" << std::endl;
+}; // semicolon required
+
+
 int main() {
+    std::cout << "App main start..." << std::endl;
 
-    std::cout << "app start ..." << std::endl;
-
+    // Local defer
     defer
     (
-        std::cout << "defer code 0.0" << std::endl;
+        std::cout << "Local defer: code 0.0" << std::endl;
     );
 
-    // this is fine
+    // Local defer
     _defer_
     {
-        std::cout << "_defer_ code 1.1" << std::endl;
-    };
+        std::cout << "Local defer: code 1.0" << std::endl;
+    }; // semicolon required
 
-    std::cout << "app end ..." << std::endl;
+    std::cout << "App main end..." << std::endl;
 
     return 0;
-
 }
+
