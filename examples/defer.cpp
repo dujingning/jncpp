@@ -42,16 +42,23 @@ _global_defer_
 int main() {
     std::cout << "App main start..." << std::endl;
 
-    // Local defer
+    {
+        _defer_ // Run before the end of scope.
+        {
+            std::cout << "defer code Run before the end of scope." << std::endl;
+        };  
+    }
+
+    // Local defer: Run before the end of scope.
     defer
     (
-        std::cout << "Local defer: code 0.0" << std::endl;
+        std::cout << "Local defer: code 1.0" << std::endl;
     );
 
-    // Local defer
+    // Local defer: Run before the end of scope.
     _defer_
     {
-        std::cout << "Local defer: code 1.0" << std::endl;
+        std::cout << "Local defer: code 2.0" << std::endl;
     }; // semicolon required
 
     std::cout << "App main end..." << std::endl;

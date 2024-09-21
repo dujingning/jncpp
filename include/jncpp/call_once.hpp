@@ -36,11 +36,14 @@
 #define CONCATENATE(x, y) CONCATENATE_DETAIL(x, y)
 #endif
 
-#define Call_Once(code)                                                         \
+/** std::call_once simple call */
+#define __Jn_Call_Once__(code, counter)                                                         \
     do {                                                                        \
-        static std::once_flag CONCATENATE(__call_once__, __LINE__);             \
-        std::call_once(CONCATENATE(__call_once__, __LINE__), [&]() { code });   \
+        static std::once_flag CONCATENATE(__call_once__, counter );             \
+        std::call_once(CONCATENATE(__call_once__, counter ), [&]() { code });   \
     } while(0)
+
+#define Call_Once(code) __Jn_Call_Once__(code, __COUNTER__)
 
 
 #endif // __JNCPP_DEFER__

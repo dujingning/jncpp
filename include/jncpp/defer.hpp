@@ -42,10 +42,12 @@ public:
     jnDeferHelper(Func func) : func_(std::forward<Func>(func)) {}
 #endif
 
-    ~jnDeferHelper() {
-      if (func_)
-        func_();
-        
+    ~jnDeferHelper() 
+    {
+        if (func_) 
+        {
+            func_();
+        }
     }
 
 private:
@@ -63,23 +65,38 @@ private:
 #define CONCATENATE(x, y) CONCATENATE_DETAIL(x, y)
 #endif
 
+
+/***************************************************************************************
+ * global defer */
+
 #ifndef _global_defer_
-#define _global_defer_ jncpp::jnDeferHelper CONCATENATE(__defer__, __LINE__) = []()
+/** global defer code Run before the end of main. */
+#define _global_defer_ jncpp::jnDeferHelper CONCATENATE(__defer__, __COUNTER__ ) = []()
 #endif
 
+#ifndef __USE_BRACE_DEFER__
+/** global defer code Run before the end of main. */
 #define global_defer(code) _global_defer_{code}
-
-/**
- * This code is work,but maybe forgot ';'
-   __jn_defer__ {
-       your code;
-   };
-*/
-#ifndef _defer_
-#define _defer_ jncpp::jnDeferHelper CONCATENATE(__defer__, __LINE__) = [&]()
+#else
+/** global defer code Run before the end of scope. */
+#define global_defer _global_defer_
 #endif
 
+
+/***************************************************************************************
+ * local defer */
+#ifndef _defer_
+/** defer code Run before the end of scope. */
+#define _defer_ jncpp::jnDeferHelper CONCATENATE(__defer__, __COUNTER__ ) = [&]()
+#endif
+
+#ifndef __USE_BRACE_DEFER__
+/** defer code Run before the end of scope. */
 #define defer(code) _defer_{code}
+#else
+/** defer code Run before the end of scope. */
+#define defer _defer_
+#endif
 
 
 }
